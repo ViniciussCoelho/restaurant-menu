@@ -1,27 +1,29 @@
 FROM ruby:3.2.2
 
-ENV NODE_VERSION 12
-ENV INSTALL_PATH /opt/app
+ENV NODE_VERSION=18 \
+    INSTALL_PATH=/opt/app \
+    LC_ALL=en_US.utf8 \
+    LANG=en_US.utf8 \
+    LANGUAGE=en_US.utf8
 
-RUN curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash -
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends \
+    curl nano nodejs postgresql-client locales yarn && \
+    echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
+    locale-gen && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-
-RUN apt-get update -qq
-RUN apt-get install -y --no-install-recommends nano nodejs postgresql-client \
-      locales yarn
-
-RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
-RUN locale-gen
-RUN export LC_ALL="en_US.utf8"
-
-RUN mkdir -p $INSTALL_PATH
+RUN useradd -m -d /home/appuser -s /bin/bash appuser && \
+    mkdir -p $INSTALL_PATH && \
+    chown -R appuser:appuser $INSTALL_PATH
 
 WORKDIR $INSTALL_PATH
-COPY Gemfile Gemfile
-COPY Gemfile.lock Gemfile.lock
-RUN gem install bundler
-RUN bundle install
 
-COPY . $INSTALL_PATH
+USER appuser
+
+COPY --chown=appuser:appuser Gemfile Gemfile.lock ./
+RUN gem install bundler && bundle install
+
+COPY --chown=appuser:appuser . .
+
+CMD ["rails", "server", "-b", "0.0.0.0"]
