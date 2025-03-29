@@ -20,4 +20,12 @@ RSpec.describe MenuItem, type: :model do
     menu_item = build(:menu_item, menu: nil)
     expect(menu_item).to_not be_valid
   end
+
+  it "is invalid with a duplicate name" do
+    restaurant = create(:restaurant)
+    menu = create(:menu, restaurant: restaurant)
+    menu_item = create(:menu_item, menu: menu)
+    duplicate_menu_item = build(:menu_item, name: menu_item.name, menu: menu)
+    expect(duplicate_menu_item).to_not be_valid
+  end
 end
