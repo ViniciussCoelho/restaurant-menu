@@ -1,10 +1,13 @@
 # Inicia o docker
 docker:
-	sudo docker-compose up
+	sudo docker compose up
+
+bundle:
+	sudo docker compose run rails bundle install
 
 # Necessario quando precisar rodar algum comando no servidor
 bash:
-	sudo docker-compose exec rails /bin/bash
+	sudo docker compose exec rails /bin/bash
 
 # Quando for preciso usar o byebug usar esse comando com o parametro container=<NOME-CONTAINER>
 debug:
@@ -28,5 +31,5 @@ else
 	echo "Para container customizado"
 	sudo rm tmp/pids/server.pid
 	sudo docker restart $(container)
-	sudo docker-compose up
+	sudo docker compose up
 endif
