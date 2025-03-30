@@ -1,6 +1,6 @@
 class MenuService
-  def get_all_data
-    menus = Menu.all
+  def get_all_data(restaurant_id)
+    menus = Menu.where(restaurant_id: restaurant_id).order(id: :asc)
     { status: :ok, data: menus }
   end
 

@@ -95,6 +95,9 @@ GEM
     irb (1.8.1)
       rdoc
       reline (>= 0.3.8)
+    jbuilder (2.13.0)
+      actionview (>= 5.0.0)
+      activesupport (>= 5.0.0)
     logger (1.7.0)
     loofah (2.21.3)
       crass (~> 1.0.2)
@@ -212,6 +215,7 @@ DEPENDENCIES
   debug
   factory_bot_rails
   faker
+  jbuilder
   oj
   pg (~> 1.1)
   puma (~> 5.0)

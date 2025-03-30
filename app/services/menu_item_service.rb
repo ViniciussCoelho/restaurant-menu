@@ -1,6 +1,6 @@
 class MenuItemService
   def get_all_data
-    menu_items = MenuItem.all
+    menu_items = MenuItem.order(id: :asc)
     { status: :ok, data: menu_items }
   end
 
@@ -23,8 +23,11 @@ class MenuItemService
   end
 
   def destroy(menu_item)
-    menu_item.destroy
-    { status: :no_content, message: 'Menu item deleted successfully' }
+    if menu_item.destroy
+      { status: :no_content, message: 'Menu item deleted successfully' }
+    else
+      { status: :unprocessable_entity, errors: menu_item.errors.full_messages }
+    end
   end
 
   def find(id)

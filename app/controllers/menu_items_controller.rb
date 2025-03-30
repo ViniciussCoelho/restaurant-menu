@@ -4,29 +4,41 @@ class MenuItemsController < ApplicationController
   def index
     result = menu_item_service.get_all_data
 
-    render json: result[:data], status: result[:status]
+    @data = result[:data]
+    @errors = result[:errors]
+
+    render 'menu_items/index', status: result[:status]
   end
 
   def show
-    render json: @menu_item, status: :ok
+    @data = @menu_item
+    render 'menu_items/show', status: :ok
   end
 
   def create
     result = menu_item_service.create(menu_item_params)
 
-    render json: result[:data], status: result[:status]
+    @data = result[:data]
+    @errors = result[:errors]
+
+    render 'menu_items/show', status: result[:status]
   end
 
   def update
     result = menu_item_service.update(@menu_item, menu_item_params)
 
-    render json: result[:data], status: result[:status]
+    @data = result[:data]
+    @errors = result[:errors]
+
+    render 'menu_items/show', status: result[:status]
   end
 
   def destroy
     result = menu_item_service.destroy(@menu_item)
 
-    render json: { message: result[:message] }, status: result[:status]
+    @errors = result[:errors]
+
+    render 'menu_items/show', status: result[:status]
   end
 
   private
