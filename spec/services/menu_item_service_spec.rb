@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe MenuItemService, type: :service do
-  let(:menu) { create(:menu) }
-  let(:valid_attributes) { { name: "Burger", menu_id: menu.id } }
-  let(:invalid_attributes) { { name: nil, menu_id: menu.id } }
-  let(:menu_item) { create(:menu_item, menu: menu) }
+  let(:valid_attributes) { { name: "Burger" } }
+  let(:invalid_attributes) { { name: nil } }
+  let(:menu_item) { create(:menu_item) }
+
   let(:menu_item_service) { MenuItemService.new }
 
   describe '#create' do
@@ -50,12 +50,22 @@ RSpec.describe MenuItemService, type: :service do
 
   describe '#destroy' do
     it 'destroys the menu item' do
-      menu_item_to_destroy = create(:menu_item, menu: menu)
+      menu_item_to_destroy = create(:menu_item)
 
       result = menu_item_service.destroy(menu_item_to_destroy)
 
       expect(result[:status]).to eq(:no_content)
       expect(MenuItem.exists?(menu_item_to_destroy.id)).to be false
+    end
+
+    it 'does not destroy if associated menu_listing exists' do
+      menu = create(:menu)
+      menu_item_to_destroy = create(:menu_item)
+      create(:menu_listing, menu: menu, menu_item: menu_item_to_destroy, price: 10.0)
+      result = menu_item_service.destroy(menu_item_to_destroy)
+
+      expect(result[:status]).to eq(:unprocessable_entity)
+      expect(result[:errors]).to include("Cannot delete record because dependent menu listings exist")
     end
   end
 

@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe MenuService, type: :service do
-  let(:valid_attributes) { { name: "Lunch Menu" } }
+  let(:restaurant) { create(:restaurant) }
+  let(:valid_attributes) { { name: "Lunch Menu", restaurant_id: restaurant.id } }
   let(:invalid_attributes) { { name: nil } }
   let(:menu) { create(:menu) }
   let(:menu_service) { MenuService.new }
@@ -10,7 +11,7 @@ RSpec.describe MenuService, type: :service do
     context 'with valid attributes' do
       it 'creates a new menu' do
         result = menu_service.create(valid_attributes)
-
+        puts result[:errors]
         expect(result[:status]).to eq(:created)
         expect(result[:data]).to be_a(Menu)
         expect(result[:data].name).to eq("Lunch Menu")
