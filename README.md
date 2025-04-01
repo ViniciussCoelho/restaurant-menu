@@ -34,7 +34,8 @@ Ensure that `restaurant_data.json` is in the root directory of the Rails applica
 
 For testing the API, a Postman collection is available:
 
-[Postman Collection](https://www.postman.com/restaurant-menu-api/collection/ykhtfpr/restaurant-api?action=share&creator=26121913)
+[Postman Collection
+](https://www.postman.com/lunar-module-technologist-86861193/restaurant-menu-api/collection/ykhtfpr/restaurant-api?action=share&creator=26121913)
 
 ## Next Steps
 
