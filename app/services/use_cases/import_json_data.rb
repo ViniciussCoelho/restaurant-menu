@@ -12,8 +12,8 @@ module UseCases
       return { status: :failure, message: "No file provided", results: @results } if @file.blank?
 
       begin
-        file_path = save_file
-        data = Oj.load(File.read(file_path))
+        file_content = @file.read
+        data = Oj.load(file_content)
         process_restaurants(data['restaurants'])
 
         message = @results[:failed].empty? ?
@@ -28,12 +28,6 @@ module UseCases
     end
 
     private
-
-    def save_file
-      file_path = Rails.root.join('tmp', @file.original_filename)
-      File.binwrite(file_path, @file.read)
-      file_path
-    end
 
     def process_restaurants(restaurants)
       restaurants.each do |restaurant_data|
