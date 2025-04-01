@@ -1,24 +1,43 @@
-# README
+# Restaurant Menu API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This project provides an API for managing restaurant menus, including restaurants, menus, and menu items. It also includes a JSON import feature to populate the database with structured restaurant data.
 
-Things you may want to cover:
+## Requirements
 
-* Ruby version
+- Docker
+- Docker Compose
 
-* System dependencies
+## Setup and Running the Project
 
-* Configuration
+1. Clone the repository:
+   ```sh
+   git clone <repository_url>
+   cd <project_directory>
+   ```
+2. Start the application using Docker Compose:
+   ```sh
+   docker compose up --build
+   ```
+3. The application should now be running and accessible at `http://localhost:3000`.
 
-* Database creation
+## Running the JSON Import Task
 
-* Database initialization
+To import restaurant data from a JSON file, use the following command inside the running Docker container:
 
-* How to run the test suite
+```sh
+docker compose exec rails rails json:import FILE=restaurant_data.json
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+Ensure that `restaurant_data.json` is in the root directory of the Rails application.
 
-* Deployment instructions
+## API Collection
 
-* ...
+For testing the API, a Postman collection is available:
+
+[Postman Collection](https://www.postman.com/restaurant-menu-api/collection/ykhtfpr/restaurant-api?action=share&creator=26121913)
+
+## Next Steps
+
+- Develop a frontend application to interact with the API.
+- Implement security measures and input validation.
+- Add authentication and authorization for secure API access.
